@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Api(tags = "Car entity")
 @RepositoryRestResource(path = "cars")
-interface CarRepository  extends CrudRepository<CarEntity, Long> {
+public interface CarRepository  extends CrudRepository<CarEntity, Long> {
 }

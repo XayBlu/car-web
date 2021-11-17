@@ -1,4 +1,4 @@
-package com.carweb.rest.docgen;
+package com.carweb.rest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

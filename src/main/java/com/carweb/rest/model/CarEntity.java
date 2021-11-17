@@ -18,14 +18,18 @@ public class CarEntity {
     @GeneratedValue
     private long id;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    private String colour;
+    private int year;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @RestResource(path = "make", rel="make")
     @JoinColumn(name = "make_id")
-    @RestResource(path = "make", rel = "make")
     private Make make;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "model_id")
-    @RestResource(path = "model", rel = "model")
+    @RestResource(path = "model", rel="model")
     private Model model;
+
 
 }

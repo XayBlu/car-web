@@ -23,6 +23,5 @@ public class Make {
     private String description;
 
     @OneToMany(mappedBy = "make")
-//    @JoinColumn(name = "car_id")
     private List<CarEntity> car;
 }
