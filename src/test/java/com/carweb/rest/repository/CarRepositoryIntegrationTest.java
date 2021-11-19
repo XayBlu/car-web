@@ -27,7 +27,7 @@ class CarRepositoryIntegrationTest {
         CarEntity savedResult = carRepository.save(carEntityIn);
 
         assertEquals(1, carRepository.count());
-        CarEntity carEntityResult = carRepository.findById(savedResult.getId()).get();
+        CarEntity carEntityResult = carRepository.findById(savedResult.getCarId()).get();
 
         assertEquals(carEntityIn.getMake().getName(), carEntityResult.getMake().getName());
         assertEquals(carEntityIn.getModel().getName(), carEntityResult.getModel().getName());

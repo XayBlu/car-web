@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class CarResponseDTO extends RepresentationModel<CarResponseDTO> {
     private String content;
 }
