@@ -31,3 +31,51 @@ Once the pod has started run the following maven command to start the applicatio
 ##Running locally with in memory H2 DB
 Run the application using local profile
 ```` mvn spring-boot:run -Dspring-boot.run.profiles=local````
+
+##Testing controller
+To test the REST controller you can use Swagger or simple curl commands.
+
+Create a new car resource using curl example:
+````$xslt
+curl --location --request POST 'http://localhost:8080/api/cars' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"colour": "Green",
+    "year": "2020",
+    "make": {
+        "name": "BMW",
+        "description": null
+    },
+    "model": {
+        "name": "1 Series"
+    }
+}'
+````
+
+Retrieve an existing car using curl command example:
+
+````curl --location --request GET 'http://localhost:8080/api/cars/4'````
+
+Update existing car example:
+````$xslt
+curl --location --request PUT 'http://localhost:8080/api/cars/4' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"colour": "Black",
+    "year": "2020",
+    "make": {
+        "name": "Fiat",
+        "description": null
+    },
+    "model": {
+        "name": "500"
+    }
+}'
+````
+
+
+Delete car example:
+```
+curl --location --request DELETE 'http://localhost:8080/api/cars/4' \
+--header 'Content-Type: application/json' 
+```

@@ -2,8 +2,7 @@
   "colour": "Red",
   "year": "2018",
   "make": {
-    "name": "BMW",
-    "description": null
+    "name": "BMW"
   },
   "model": {
     "name": "X1"
