@@ -20,7 +20,7 @@ to local which uses an in memory H2 DB for non volatile storage.
 To run the test simply run the maven command:
 ```mvn clean test```
 
-##Running locally with docker PostgresDB for persistent storage
+## Running locally with docker PostgresDB for persistent storage
 To run locally with persistent storage you would need to have docker installed on your machine.
 In the root directory of the application run the following command to start up the PostgresSQL database:
 ```docker-compose up -d```
