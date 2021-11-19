@@ -16,7 +16,7 @@ We provide a default application yaml that uses a Postgres docker instance or a 
 to local which uses an in memory H2 DB for non volatile storage.
 
 
-##Testing
+## Testing
 To run the test simply run the maven command:
 ```mvn clean test```
 
@@ -28,11 +28,11 @@ In the root directory of the application run the following command to start up t
 Once the pod has started run the following maven command to start the application:
 ```mvn clean spring-boot:run```
 
-##Running locally with in memory H2 DB
+## Running locally with in memory H2 DB
 Run the application using local profile
 ```` mvn spring-boot:run -Dspring-boot.run.profiles=local````
 
-##Testing controller
+## Testing controller
 To test the REST controller you can use Swagger or simple curl commands.
 
 Create a new car resource using curl example:
