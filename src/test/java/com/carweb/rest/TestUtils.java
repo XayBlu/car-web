@@ -4,7 +4,6 @@ import com.carweb.rest.model.CarEntity;
 import com.carweb.rest.model.Make;
 import com.carweb.rest.model.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class TestUtils {
     public static CarEntity createCarEntity(final String carMakeName, final String carModelName)
@@ -20,9 +19,6 @@ public final class TestUtils {
         var model = new Model();
         model.setName(carModelName);
         carEntity.setModel(model);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(objectMapper.writeValueAsString(carEntity));
 
         return carEntity;
     }
