@@ -6,6 +6,7 @@ import com.carweb.rest.model.CarEntity;
 import com.carweb.rest.repository.CarRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ class CarControllerIntegrationTest {
     void shouldRetrieveExistingCarResource() throws JsonProcessingException {
         var savedCar = carRepository.save(TestUtils.createCarEntity("Toyota", "Yaris"));
         Assertions.assertThat(
-                restTemplate.getForObject("http://localhost:" + port + "/api/cars/" + savedCar.getId(),
+                restTemplate.getForObject("http://localhost:" + port + "/api/cars/" + savedCar.getCarId(),
                         String.class)).contains(savedCar.getMake().getName());
     }
 
@@ -84,26 +85,31 @@ class CarControllerIntegrationTest {
         headers.set("Content-Type", "application/json");
         var request = new HttpEntity<>(createCarPayLoad, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(uri, request, String.class);
+        var createCarResponse = restTemplate.postForEntity(uri, request, CarResponseDTO.class);
 
-        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(createCarResponse.getStatusCode().is2xxSuccessful()).isTrue();
 
-        CarEntity result = carRepository.findById(1l).get();
-        assertThat(result.getColour()).isEqualTo("Red");
-        assertThat(result.getYear()).isEqualTo(2018);
-        assertThat(result.getMake().getName()).isEqualTo("BMW");
-        assertThat(result.getModel().getName()).isEqualTo("X1");
+        var newCarURI = URI.create(createCarResponse.getBody().getLink("self").get().getHref());
+        var carResult = restTemplate.getForEntity(newCarURI, CarEntity.class).getBody();
 
-        CarEntity carEntity = TestUtils.createCarEntity("Audi", "A3");
-        HttpEntity<CarEntity> updateEntity = new HttpEntity<>(carEntity, headers);
+        AssertionsForClassTypes.assertThat(carResult).extracting("colour", "year")
+                .doesNotContainNull()
+                .containsExactly("Red", 2018);
+        assertThat(carResult.getMake().getName()).isEqualTo("BMW");
+        assertThat(carResult.getModel().getName()).isEqualTo("X1");
 
-        restTemplate.put(URI.create(BASE_URL + 1l), updateEntity);
+        var carEntity = TestUtils.createCarEntity("Ford", "Focus");
+        var updateEntity = new HttpEntity<>(carEntity, headers);
 
-        CarEntity updatedResult = restTemplate.getForObject(URI.create(BASE_URL + 1l), CarEntity.class);
-        assertThat(updatedResult.getColour()).isEqualTo("Blue");
-        assertThat(updatedResult.getYear()).isEqualTo(2017);
-        assertThat(updatedResult.getMake().getName()).isEqualTo("Audi");
-        assertThat(updatedResult.getModel().getName()).isEqualTo("A3");
+        restTemplate.put(newCarURI, updateEntity);
+
+        var updatedResult = restTemplate.getForObject(newCarURI, CarEntity.class);
+        assertThat(updatedResult).extracting("colour", "year")
+                .doesNotContainNull()
+                .containsExactly("Blue", 2017);
+
+        assertThat(updatedResult.getMake().getName()).isEqualTo("Ford");
+        assertThat(updatedResult.getModel().getName()).isEqualTo("Focus");
     }
 
     @Test
