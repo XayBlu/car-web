@@ -1,16 +1,24 @@
 package com.carweb.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@RestResource(path = "model", rel = "model")
 public class Model {
 
     @Id
@@ -20,6 +28,11 @@ public class Model {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "model")
-    private List<CarEntity> cars;
+    @CreationTimestamp
+    @JsonIgnore
+    private LocalDateTime createdDateTime;
+
+    @UpdateTimestamp
+    @JsonIgnore
+    private LocalDateTime updateDateTime;
 }

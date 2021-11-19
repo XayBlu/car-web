@@ -1,11 +1,15 @@
 package com.carweb.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity(name = "cars")
 @Getter
@@ -16,20 +20,27 @@ public class CarEntity {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long carId;
 
     private String colour;
     private int year;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @RestResource(path = "make", rel="make")
+    @CreationTimestamp
+    @JsonIgnore
+    private LocalDateTime createdDateTime;
+
+    @UpdateTimestamp
+    @JsonIgnore
+    private LocalDateTime updateDateTime;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "make_id")
+    @RestResource(path = "make", rel = "make")
     private Make make;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "model_id")
-    @RestResource(path = "model", rel="model")
+    @RestResource(path = "model", rel = "model")
     private Model model;
-
 
 }
